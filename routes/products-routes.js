@@ -4,7 +4,15 @@ const productsController = require("../controllers/products-controller")
 
 const router = express.Router();
 
-router.post("/add-product", productsController.addProducts)
+
+router.route("/")
+    .get(productsController.getAllProduct)
+    .post(productsController.addProducts)
+
+
+router
+    .route("/:id")
+    .patch(productsController.updateProduct)
 
 
 module.exports = router;
