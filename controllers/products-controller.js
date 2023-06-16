@@ -10,20 +10,30 @@ const {
 
 exports.getAllProduct = async (req, res, next) => {
     try {
-        const filters = { ...req.query }
+
+        let filters = { ...req.query }
+
         const excludeFields = ["sort", "page", "limit"]
         excludeFields.forEach(fields => delete filters[fields])
 
-        const queries = {}
 
+
+        let filtersString = JSON.stringify(filters)
+        filtersString = filtersString.replace(/\b(gt|lt|gte|lte)\b/g, match => `$${match}`)
+
+        filters = JSON.parse(filtersString)
+        console.log(filters)
+
+
+        const queries = {}
         if (req.query.sort) {
-            const sortBy = req.query.sort.split(",").join(" ");
-            queries.sortBy = sortBy;
+            const sortBy = req.query.sort.split(", ").join(" ")
+            queries.sortBy = sortBy
         }
 
         if (req.query.fields) {
-            const fields = req.query.fields.split(",").join(" ");
-            queries.fields = fields;
+            const fields = req.query.fields.split(",").join(" ")
+            queries.fields = fields
         }
 
         const result = await getProductsService(filters, queries)

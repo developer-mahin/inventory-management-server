@@ -12,9 +12,9 @@ exports.createProductService = async (data) => {
 
 exports.getProductsService = async (filters, queries) => {
 
-    const result = await Product.find({})
-        .select(queries.fields)
+    const result = await Product.find(filters)
         .sort(queries.sortBy)
+        .select(queries.fields)
     return result
 }
 
