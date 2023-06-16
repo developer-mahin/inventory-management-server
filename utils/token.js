@@ -9,3 +9,4 @@ exports.generateToken = (userInfo) => {
     })
     return token
 }
+
