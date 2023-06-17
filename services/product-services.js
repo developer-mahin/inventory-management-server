@@ -13,9 +13,13 @@ exports.createProductService = async (data) => {
 exports.getProductsService = async (filters, queries) => {
 
     const result = await Product.find(filters)
-        .sort(queries.sortBy)
+        .skip(queries.skip)
+        .limit(queries.limit)
         .select(queries.fields)
-    return result
+        .sort(queries.sortBy)
+    const totalProduct = await Product.countDocuments(filters)
+    const page = Math.ceil(totalProduct / queries.limit)
+    return { page, totalProduct, result }
 }
 
 
