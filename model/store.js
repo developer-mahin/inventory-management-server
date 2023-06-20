@@ -31,5 +31,5 @@ const storeSchema = mongoose.Schema({
 })
 
 
-const Store = mongoose.Schema("Brand", storeSchema)
+const Store = mongoose.Schema("Store", storeSchema)
 module.exports = Store

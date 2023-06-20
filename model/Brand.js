@@ -5,7 +5,7 @@ const { ObjectId } = mongoose.Schema.Types
 const brandSchema = mongoose.Schema({
     name: {
         type: String,
-        required: [true, "Please porvide a Brand name"],
+        required: [true, "Please provide a brand name"],
         unique: true,
         trim: true,
     },
@@ -42,5 +42,6 @@ const brandSchema = mongoose.Schema({
 })
 
 
-const Brand = mongoose.Schema("Brand", brandSchema)
+const Brand = mongoose.model("Brand", brandSchema)
 module.exports = Brand
+
