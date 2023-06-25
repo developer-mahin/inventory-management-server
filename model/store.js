@@ -31,5 +31,5 @@ const storeSchema = mongoose.Schema({
 })
 
 
-const Store = mongoose.Schema("Store", storeSchema)
+const Store = mongoose.model("Store", storeSchema)
 module.exports = Store

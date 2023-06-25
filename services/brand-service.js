@@ -9,3 +9,15 @@ exports.getBrandService = async () => {
     const result = await Brand.find({})
     return result
 }
+
+exports.getSpecificBrandService = async (id) => {
+    const result = await Brand.findOne({ _id: id })
+    return result
+}
+
+exports.updatedBrandService = async (id, data) => {
+    const result = await Brand.updateOne({ _id: id }, data, {
+        runValidators: true
+    })
+    return result
+}
