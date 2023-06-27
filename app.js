@@ -5,10 +5,14 @@ const productRoute = require("./routes/products-routes")
 const brandRoute = require("./routes/brand-routes")
 const categoryRoute = require("./routes/category-routes")
 const storeRoute = require("./routes/store-routes")
+const authRoute = require("./routes/auth-routes")
+
 
 app.use(express.json())
 app.use(cors())
 
+
+app.use("/api/v1/auth", authRoute)
 app.use("/api/v1/product", productRoute);
 app.use("/api/v1/brand", brandRoute);
 app.use("/api/v1/category", categoryRoute)

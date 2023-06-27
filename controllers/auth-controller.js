@@ -1,93 +1,69 @@
+const { createUserService, getUserByEmail } = require("../services/auth-service")
 
-app.post("/signup", async (req, res) => {
+
+exports.createUser = async (req, res, next) => {
     try {
-        const userInfo = req.body
-        const user = await User.create(userInfo)
-        const token = generateToken(user)
-
+        const user = await createUserService(req.body)
         res.status(200).json({
             status: "success",
-            message: "Successfully signed up user",
-            data: {
-                token
-            }
+            message: "successfully created the user",
+            user: user
         })
 
     } catch (error) {
         res.status(500).json({
-            status: "Failed",
-            error
+            status: "failed",
+            error: error.message
         })
     }
-})
+}
 
-// login user
-app.post("/login", async (req, res) => {
-
+exports.loginUser = async (req, res, next) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
-            return res.status(401).json({
-                status: "fail",
-                error: "Please provide valid user credentials"
+            return res.status(400).json({
+                status: "failed",
+                error: "Please provide valid info"
             })
         }
 
-        const user = await User.findOne({ email })
+        const user = await getUserByEmail(email)
         if (!user) {
-            return res.status(401).json({
-                status: "fail",
-                error: "User not found, Please create an accountF "
+            return res.status(400).json({
+                status: "failed",
+                error: "Please Create an account first"
             })
         }
 
-        const isValidPassword = user.comparePassword(password, user.password)
-        if (!isValidPassword) {
-            return res.status(401).json({
-                status: "fail",
-                error: "Password is not correct"
+        const isPasswordValid = user.comparePassword(password, user.password)
+        if (!isPasswordValid) {
+            return res.status(400).json({
+                status: "failed",
+                error: "Please provide valid email and password"
             })
         }
 
-        const token = generateToken(user)
-        const { password: pwd, ...others } = user.toObject()
+        if (user.status != "active") {
+            return res.status(400).json({
+                status: "failed",
+                error: "Please provide valid email and password"
+            })
+        }
 
-        res.status(200).json({
-            status: "Success",
-            message: "Successfully user login",
-            data: {
-                user: others,
-                token
-            }
-        })
+        
 
-
-    } catch (error) {
-        res.status(500).json({
-            status: "fail",
-            error
-        })
-    }
-
-})
-
-
-app.get("/me", verifyToken, async (req, res) => {
-    try {
-        const user = await User.findOne({ email: req.user?.email })
-        const { password: pwd, ...others } = user.toObject()
 
         res.status(200).json({
             status: "success",
-            data: {
-                others
-            }
+            message: "successfully created the user",
+            user: user
         })
 
     } catch (error) {
         res.status(500).json({
-            status: "fail",
-            error
+            status: "failed",
+            error: error.message
         })
     }
-})
+}

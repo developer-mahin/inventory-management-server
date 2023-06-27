@@ -20,18 +20,18 @@ const brandSchema = mongoose.Schema({
         type: String,
         validate: [validator.isURL, "Please provide a valid url"]
     },
-    product: {
+    product: [{
         type: ObjectId,
         ref: "Product"
-    },
-    supplier: {
+    }],
+    supplier: [{
         name: String,
         contactNumber: String,
         id: {
             type: ObjectId,
             ref: "Supplier"
         }
-    },
+    }],
     status: {
         type: String,
         enum: ["active", "in-active"],
