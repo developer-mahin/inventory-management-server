@@ -1,13 +1,14 @@
 const express = require("express")
 const productsController = require("../controllers/products-controller")
-
+const authorization = require("../middleware/authorization");
+const verifyToken = require("../middleware/verifyToken");
 
 const router = express.Router();
 
 
 router.route("/")
     .get(productsController.getAllProduct)
-    .post(productsController.addProducts)
+    .post(verifyToken, authorization("admin"), productsController.addProducts)
 
 router
     .route("/bulk-update")
